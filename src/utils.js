@@ -90,6 +90,14 @@ export function setPlayer ( number ) {
 
 }
 
+export function mainMenu () {
+    
+    resetGame()
+
+    GAMEDATA.gameStarted = false
+
+}
+
 export function resetBoard () {
 
     for ( let y = 0; y < 3; y++ ) {

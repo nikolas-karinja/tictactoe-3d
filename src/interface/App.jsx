@@ -10,9 +10,12 @@ import { Model as XShape } from '../models/XShape'
 import { createEvent } from '../utils'
 import { useEffect, useState } from 'react'
 import GameFinished from './GameFinished'
+import MainMenu from './MainMenu'
 import MiniHelp from './MiniHelp'
 
+createEvent( 'menu' )
 createEvent( 'move' )
+createEvent( 'play' )
 createEvent( 'reset' )
 
 const App = () => {
@@ -21,7 +24,9 @@ const App = () => {
 
     useEffect( () => {
 
+        window.addEventListener( 'menu', () => setUpdate( Date.now() ) )
         window.addEventListener( 'move', () => setUpdate( Date.now() ) )
+        window.addEventListener( 'play', () => setUpdate( Date.now() ) )
         window.addEventListener( 'reset', () => setUpdate( Date.now() ) )
 
     } )
@@ -65,8 +70,9 @@ const App = () => {
                     position={ [ -2.5, 10, 5 ] }
                     shadow-mapSize={ 1024 } />
                 <OrbitControls
-                    autoRotate={ GAMEDATA.gameFinished }
+                    autoRotate={ GAMEDATA.gameFinished || !GAMEDATA.gameStarted }
                     enablePan={ false }
+                    enableRotate={ GAMEDATA.gameStarted }
                     enableZoom={ false } />
                 <Board1 />
                 <Board />
@@ -78,10 +84,11 @@ const App = () => {
 
                 <Preload />
             </Canvas>
-            <TurnData />
-            <MiniHelp />
-            <AppData />
+            <TurnData display={ GAMEDATA.gameStarted && !GAMEDATA.gameFinished } />
+            <MiniHelp display={ GAMEDATA.gameStarted && !GAMEDATA.gameFinished } />
+            <AppData display={ GAMEDATA.gameStarted } />
             <GameFinished show={ GAMEDATA.gameFinished } />
+            <MainMenu display={ !GAMEDATA.gameStarted } />
         </>
     )
 

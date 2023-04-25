@@ -19,6 +19,7 @@ export const GAMERULES = {
 }
 
 export const GAMEDATA = {
+    gameStarted: false,
     currentTurnTime: GAMERULES.maxTurnTimeAllowed,
     gameFinished: false,
     meshesO: [],

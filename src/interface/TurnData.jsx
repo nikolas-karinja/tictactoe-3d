@@ -3,10 +3,12 @@ import PlayerShapeCanvas from './PlayerShapeCanvas'
 import PlayerTypeCanvas from './PlayerTypeCanvas'
 import { GAMEDATA } from '../constants'
 
-const TurnData = () => {
+const TurnData = ( { display } ) => {
 
     return (
-        <div className='TurnData'>
+        <div 
+            className='TurnData' 
+            style={ { display: display ? 'flex' : 'none' } }>
             <div className='TurnData-playerType'>
                 <PlayerTypeCanvas />
             </div>

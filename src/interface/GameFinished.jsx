@@ -1,6 +1,6 @@
 import { GAMEDATA } from '../constants'
 import '../sass/GameFinished.sass'
-import { dispatchEvent, resetGame } from '../utils'
+import { dispatchEvent, mainMenu, resetGame } from '../utils'
 import GameFinishedShapeCanvas from './GameFinishedShapeCanvas'
 
 const GameFinished = ( { show } ) => {
@@ -10,6 +10,14 @@ const GameFinished = ( { show } ) => {
         resetGame()
 
         dispatchEvent( 'reset' )
+
+    }
+
+    const onMainMenu = () => {
+
+        mainMenu()
+
+        dispatchEvent( 'menu' )
 
     }
 
@@ -26,7 +34,7 @@ const GameFinished = ( { show } ) => {
             <div className='GameFinished-message'>{ GAMEDATA.winner === 2 ? 'Draw...' : 'Victory!' }</div>
             <div className='GameFinished-buttons'>
                 <button className='GameFinished-button' onClick={ () => onPlayAgain() }>Play Again</button>
-                {/* <button className='GameFinished-button'>Main Menu</button> */}
+                <button className='GameFinished-button' onClick={ () => onMainMenu() }>Main Menu</button>
             </div>
         </div>
     )
