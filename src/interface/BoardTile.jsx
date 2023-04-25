@@ -1,5 +1,5 @@
 import { GAMEDATA } from '../constants'
-import { changePlayers, dispatchEvent } from '../utils'
+import { changePlayers, dispatchEvent, playSound } from '../utils'
 
 const BoardTile = ( { x, z, index } ) => {
 
@@ -14,7 +14,8 @@ const BoardTile = ( { x, z, index } ) => {
 
             GAMEDATA.board[ c ][ cc ] = GAMEDATA.player
 
-            dispatchEvent( 'move' )
+            playSound( 'SFX', 'Place' )
+            dispatchEvent( 'update' )
             changePlayers()
 
         }

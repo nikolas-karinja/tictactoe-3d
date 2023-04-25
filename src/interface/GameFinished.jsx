@@ -1,6 +1,6 @@
 import { GAMEDATA } from '../constants'
 import '../sass/GameFinished.sass'
-import { dispatchEvent, mainMenu, resetGame } from '../utils'
+import { dispatchEvent, mainMenu, playSound, resetGame, stopSound } from '../utils'
 import GameFinishedShapeCanvas from './GameFinishedShapeCanvas'
 
 const GameFinished = ( { show } ) => {
@@ -8,16 +8,17 @@ const GameFinished = ( { show } ) => {
     const onPlayAgain = () => {
 
         resetGame()
-
-        dispatchEvent( 'reset' )
+        playSound( 'UI', 'Button' )
+        dispatchEvent( 'update' )
 
     }
 
     const onMainMenu = () => {
 
         mainMenu()
-
-        dispatchEvent( 'menu' )
+        playSound( 'UI', 'Button' )
+        stopSound( 'House Music' )
+        dispatchEvent( 'update' )
 
     }
 

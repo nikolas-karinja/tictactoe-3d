@@ -1,6 +1,4 @@
-import { GAMEDATA } from './constants'
-
-const Events = {}
+import { AUDIO, EVENTS, GAMEDATA } from './constants'
 
 export function changePlayers () {
 
@@ -9,12 +7,16 @@ export function changePlayers () {
         GAMEDATA.gameFinished = true
         GAMEDATA.winner = GAMEDATA.player
 
+        playSound( 'UI', 'Win' )
+
     } else {
 
         if ( checkBoardForDraw() ) {
 
             GAMEDATA.winner = 2
             GAMEDATA.gameFinished = true
+
+            playSound( 'UI', 'Draw' )
 
         } else {
 
@@ -72,21 +74,29 @@ export function checkBoardForDraw () {
 
 }
 
+export function createAudioChannels () {
+
+    AUDIO.createChannel( 'OST' )
+    AUDIO.createChannel( 'SFX' )
+    AUDIO.createChannel( 'UI' )
+
+}
+
 export function createEvent ( name ) {
 
-    Events[ name ] = new Event( name )
+    EVENTS[ name ] = new Event( name )
 
 }
 
 export function dispatchEvent ( name ) {
 
-    window.dispatchEvent( Events[ name ] )
+    window.dispatchEvent( EVENTS[ name ] )
 
 }
 
-export function setPlayer ( number ) {
+export function loadAudio ( ...args ) {
 
-    GAMEDATA.player = number
+    AUDIO.load( ...args )
 
 }
 
@@ -95,6 +105,12 @@ export function mainMenu () {
     resetGame()
 
     GAMEDATA.gameStarted = false
+
+}
+
+export function playSound ( channelName, soundName ) {
+
+    AUDIO.playSound( channelName, soundName )
 
 }
 
@@ -119,5 +135,17 @@ export function resetGame () {
 
     GAMEDATA.winner = 2
     GAMEDATA.gameFinished = false
+
+}
+
+export function setPlayer ( number ) {
+
+    GAMEDATA.player = number
+
+}
+
+export function stopSound ( soundName ) {
+
+    AUDIO.stopSound( soundName )
 
 }

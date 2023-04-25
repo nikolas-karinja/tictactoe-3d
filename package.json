@@ -36,6 +36,7 @@
     ]
   },
   "devDependencies": {
+    "@little-island/audio": "^0.1.2",
     "@react-three/drei": "^9.65.5",
     "@react-three/fiber": "^8.12.2",
     "sass": "^1.62.0"

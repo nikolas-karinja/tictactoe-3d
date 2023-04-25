@@ -1,3 +1,8 @@
+import { AudioMixer } from '@little-island/audio'
+
+export const EVENTS = {}
+export const AUDIO = new AudioMixer()
+
 export const BOARD = {
     positions: [
         [ -1, -1 ],
@@ -19,6 +24,7 @@ export const GAMERULES = {
 }
 
 export const GAMEDATA = {
+    aboutMenuOpen: false,
     gameStarted: false,
     currentTurnTime: GAMERULES.maxTurnTimeAllowed,
     gameFinished: false,
@@ -33,3 +39,13 @@ export const GAMEDATA = {
         [ 2, 2, 2 ],
     ],
 }
+
+export const sounds = [
+    { name: 'House Music', url: './audio/ost/house.mp3', options: { loop: true } },
+
+    { name: 'Place', url: './audio/sfx/place.mp3' },
+
+    { name: 'Button', url: './audio/ui/button.mp3' },
+    { name: 'Draw', url: './audio/ui/draw.mp3' },
+    { name: 'Win', url: './audio/ui/win.mp3' },
+]

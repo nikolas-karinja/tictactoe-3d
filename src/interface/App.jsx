@@ -13,21 +13,13 @@ import GameFinished from './GameFinished'
 import MainMenu from './MainMenu'
 import MiniHelp from './MiniHelp'
 
-createEvent( 'menu' )
-createEvent( 'move' )
-createEvent( 'play' )
-createEvent( 'reset' )
-
 const App = () => {
 
     const [ update, setUpdate ] = useState( false )
 
     useEffect( () => {
 
-        window.addEventListener( 'menu', () => setUpdate( Date.now() ) )
-        window.addEventListener( 'move', () => setUpdate( Date.now() ) )
-        window.addEventListener( 'play', () => setUpdate( Date.now() ) )
-        window.addEventListener( 'reset', () => setUpdate( Date.now() ) )
+        window.addEventListener( 'update', () => setUpdate( Date.now() ) )
 
     } )
 
