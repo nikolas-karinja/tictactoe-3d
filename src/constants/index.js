@@ -18,6 +18,7 @@ export const BOARD = {
 }
 
 export const GAMERULES = {
+    cpuPlayer: true,
     maxTurnTimeAllowed: 5, // seconds allowed for each player's turn
     playerToStart: 0, // 0 is X, 1 is O
     turnTimeLimit: true, // if there should be a time limit for each player's turn
@@ -25,13 +26,15 @@ export const GAMERULES = {
 
 export const GAMEDATA = {
     aboutMenuOpen: false,
-    gameStarted: false,
+    cpuTurn: false,
     currentTurnTime: GAMERULES.maxTurnTimeAllowed,
     gameFinished: false,
+    gameStarted: false,
     meshesO: [],
     meshesX: [],
     player: GAMERULES.playerToStart, // 0 is X, 1 is O
     winner: 2, // 0 = X, 1 = O, 2 = none
+    boardTilesAvailable: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ], 
 
     board: [ // 0 = X, 1 = O, 2 = none
         [ 2, 2, 2 ],

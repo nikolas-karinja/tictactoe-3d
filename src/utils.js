@@ -1,6 +1,8 @@
-import { AUDIO, EVENTS, GAMEDATA } from './constants'
+import { AUDIO, EVENTS, GAMEDATA, GAMERULES } from './constants'
 
 export function changePlayers () {
+
+    if ( GAMEDATA.cpuTurn ) GAMEDATA.cpuTurn = false
 
     if ( checkBoardForWin() ) {
 
@@ -21,6 +23,19 @@ export function changePlayers () {
         } else {
 
             setPlayer( GAMEDATA.player === 1 ? 0 : 1 )
+
+            if ( GAMEDATA.player === 1 && GAMERULES.cpuPlayer ) {
+
+                GAMEDATA.cpuTurn = true
+
+                const rN = GAMEDATA.boardTilesAvailable[ Math.floor( Math.random() * GAMEDATA.boardTilesAvailable.length ) ]
+
+                const c = Math.floor( rN / 3 )
+                const cc = rN % 3
+
+                setTimeout( () => placeShape( c, cc ), 250 )
+
+            }
 
         }
 
@@ -108,6 +123,24 @@ export function mainMenu () {
 
 }
 
+export function placeShape ( c, cc ) {
+
+    GAMEDATA.board[ c ][ cc ] = GAMEDATA.player
+
+    const index = GAMEDATA.boardTilesAvailable.indexOf( ( c * 3 ) + cc )
+
+    if ( index > -1 ) {
+
+        GAMEDATA.boardTilesAvailable.splice( index, 1 )
+
+    }
+
+    playSound( 'SFX', 'Place' )
+    dispatchEvent( 'update' )
+    changePlayers()
+
+}
+
 export function playSound ( channelName, soundName ) {
 
     AUDIO.playSound( channelName, soundName )
@@ -126,15 +159,18 @@ export function resetBoard () {
 
     }
 
+    GAMEDATA.boardTilesAvailable = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+
 }
 
 export function resetGame () {
     
     resetBoard()
-    setPlayer( GAMEDATA.winner === 2 ? Math.round( Math.random() ) : GAMEDATA.winner === 0 ? 1 : 0 )
 
     GAMEDATA.winner = 2
     GAMEDATA.gameFinished = false
+
+    changePlayers()
 
 }
 

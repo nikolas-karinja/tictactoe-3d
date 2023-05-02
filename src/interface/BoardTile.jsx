@@ -1,5 +1,5 @@
 import { GAMEDATA } from '../constants'
-import { changePlayers, dispatchEvent, playSound } from '../utils'
+import { changePlayers, dispatchEvent, placeShape, playSound } from '../utils'
 
 const BoardTile = ( { x, z, index } ) => {
 
@@ -10,13 +10,9 @@ const BoardTile = ( { x, z, index } ) => {
         const c = Math.floor( i / 3 )
         const cc = i % 3
 
-        if ( !GAMEDATA.gameFinished && GAMEDATA.board[ c ][ cc ] === 2 ) {
+        if ( !GAMEDATA.gameFinished && GAMEDATA.board[ c ][ cc ] === 2 && !GAMEDATA.cpuTurn ) {
 
-            GAMEDATA.board[ c ][ cc ] = GAMEDATA.player
-
-            playSound( 'SFX', 'Place' )
-            dispatchEvent( 'update' )
-            changePlayers()
+            placeShape( c, cc )
 
         }
 
