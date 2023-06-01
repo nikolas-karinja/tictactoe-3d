@@ -33,7 +33,7 @@ export function changePlayers () {
                 const c = Math.floor( rN / 3 )
                 const cc = rN % 3
 
-                setTimeout( () => placeShape( c, cc ), 250 )
+                if ( !GAMEDATA.mainMenuOpen ) setTimeout( () => placeShape( c, cc ), 350 )
 
             }
 
@@ -116,6 +116,8 @@ export function loadAudio ( ...args ) {
 }
 
 export function mainMenu () {
+
+    GAMEDATA.mainMenuOpen = true
     
     resetGame()
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { GAMEDATA } from '../constants'
+import { GAMEDATA, VERSION } from '../constants'
 import '../sass/MainMenu.sass'
-import { dispatchEvent, playSound } from '../utils'
+import { dispatchEvent, playSound, resetGame } from '../utils'
 import MainMenuCanvas from './MainMenuCanvas'
 
 const MainMenu = ( { display } ) => {
@@ -11,6 +11,9 @@ const MainMenu = ( { display } ) => {
     const onPlay = () => {
 
         GAMEDATA.gameStarted = true
+        GAMEDATA.mainMenuOpen = false
+
+        resetGame()
 
         playSound( 'UI', 'Button' )
         playSound( 'OST', 'House Music' )
@@ -51,6 +54,7 @@ const MainMenu = ( { display } ) => {
                     className='MainMenu-page'
                     style={ { display: GAMEDATA.aboutMenuOpen ? 'none' : 'flex' } }>
                     <div className='MainMenu-title'>Tic-Tac-Toe!</div>
+                    <div className='MainMenu-data'>Play with a friend!</div>
                     <div className='MainMenu-canvas'>
                         <MainMenuCanvas />
                     </div>
@@ -58,6 +62,7 @@ const MainMenu = ( { display } ) => {
                     <button className='MainMenu-button disabled'>Settings</button>
                     <button className='MainMenu-button' onClick={ () => onAbout() }>About</button>
                     <div className='MainMenu-data'>Developed by Nikolas Karinja</div>
+                    <div className='MainMenu-data'>WIP v{ VERSION }</div>
                 </div>
                 <div 
                     className='MainMenu-page'
