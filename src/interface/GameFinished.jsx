@@ -18,8 +18,6 @@ const GameFinished = ( { show } ) => {
         mainMenu()
         playSound( 'UI', 'Button' )
         stopSound( 'House Music' )
-        dispatchEvent( 'update' )
-
     }
 
     return (

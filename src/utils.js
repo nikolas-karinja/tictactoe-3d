@@ -33,7 +33,7 @@ export function changePlayers () {
                 const c = Math.floor( rN / 3 )
                 const cc = rN % 3
 
-                if ( !GAMEDATA.mainMenuOpen ) setTimeout( () => placeShape( c, cc ), 350 )
+                if ( !GAMEDATA.mainMenuOpen ) setTimeout( () => placeShape( c, cc ), 500 )
 
             }
 
@@ -41,6 +41,7 @@ export function changePlayers () {
 
     }
 
+    dispatchEvent( 'update' )
 }
 
 export function checkBoardForWin () {
@@ -123,6 +124,7 @@ export function mainMenu () {
 
     GAMEDATA.gameStarted = false
 
+    dispatchEvent('open main menu')
 }
 
 export function placeShape ( c, cc ) {

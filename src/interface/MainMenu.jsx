@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { GAMEDATA, VERSION } from '../constants'
+import { GAMEDATA, GAMERULES, VERSION } from '../constants'
 import '../sass/MainMenu.sass'
 import { dispatchEvent, playSound, resetGame } from '../utils'
 import MainMenuCanvas from './MainMenuCanvas'
@@ -7,13 +7,16 @@ import MainMenuCanvas from './MainMenuCanvas'
 const MainMenu = ( { display } ) => {
 
     const [ update, setUpdate ] = useState( Date.now() )
+    const [aboutMenuOpen, setAboutMenuOpen] = useState(false)
 
-    const onPlay = () => {
+    const onPlay = (cpuPlayer = false) => {
 
         GAMEDATA.gameStarted = true
         GAMEDATA.mainMenuOpen = false
+        GAMERULES.cpuPlayer = cpuPlayer
 
         resetGame()
+        dispatchEvent("close main menu")
 
         playSound( 'UI', 'Button' )
         playSound( 'OST', 'House Music' )
@@ -21,28 +24,23 @@ const MainMenu = ( { display } ) => {
 
     }
 
-    const onAbout = () => {
-
-        GAMEDATA.aboutMenuOpen = true
-
+    const onAbout = () => 
+    {
         playSound( 'UI', 'Button' )
-        dispatchEvent( 'update' )
-
+        dispatchEvent('open about menu')
     }
 
-    const onMainMenu = () => {
-
-        GAMEDATA.aboutMenuOpen = false
-
+    const onMainMenu = () => 
+    {
         playSound( 'UI', 'Button' )
-        dispatchEvent( 'update' )
-
+        dispatchEvent('close about menu')
     }
 
-    useEffect( () => {
-
+    useEffect( () => 
+    {
         window.addEventListener( 'update', () => setUpdate( Date.now() ) )
-
+        window.addEventListener('open about menu', () => setAboutMenuOpen(true))
+        window.addEventListener('close about menu', () => setAboutMenuOpen(false))
     }, [] )
 
     return (
@@ -52,21 +50,22 @@ const MainMenu = ( { display } ) => {
             <div className='MainMenu-content'>
                 <div 
                     className='MainMenu-page'
-                    style={ { display: GAMEDATA.aboutMenuOpen ? 'none' : 'flex' } }>
+                    style={ { display: aboutMenuOpen ? 'none' : 'flex' } }>
                     <div className='MainMenu-title'>Tic-Tac-Toe!</div>
-                    <div className='MainMenu-data'>Play with a friend!</div>
+                    <div className='MainMenu-data'>Play with a friend or beat the computer!</div>
                     <div className='MainMenu-canvas'>
                         <MainMenuCanvas />
                     </div>
-                    <button className='MainMenu-button' onClick={ () => onPlay() }>Play</button>
-                    <button className='MainMenu-button disabled'>Settings</button>
+                    <button className='MainMenu-button' onClick={ () => onPlay(true) }>Play Solo</button>
+                    <button className='MainMenu-button' onClick={ () => onPlay(false) }>Play Hotseat</button>
+                    {/* <button className='MainMenu-button disabled'>Settings</button> */}
                     <button className='MainMenu-button' onClick={ () => onAbout() }>About</button>
                     <div className='MainMenu-data'>Developed by Nikolas Karinja</div>
                     <div className='MainMenu-data'>WIP v{ VERSION }</div>
                 </div>
                 <div 
                     className='MainMenu-page'
-                    style={ { display: GAMEDATA.aboutMenuOpen ? 'flex' : 'none' } }>
+                    style={ { display: aboutMenuOpen ? 'flex' : 'none' } }>
                     <div className='MainMenu-title'>About</div>
                     <div className='MainMenu-data'>@react-three/fiber</div>
                     <div className='MainMenu-data'>@react-three/drei</div>

@@ -16,12 +16,14 @@ import MiniHelp from './MiniHelp'
 const App = () => {
 
     const [ update, setUpdate ] = useState( false )
+    const [mainMenuOpen, setMainMenuOpen] = useState(true)
 
-    useEffect( () => {
-
+    useEffect( () => 
+    {
         window.addEventListener( 'update', () => setUpdate( Date.now() ) )
-
-    } )
+        window.addEventListener('open main menu', () => setMainMenuOpen(true))
+        window.addEventListener('close main menu', () => setMainMenuOpen(false))
+    }, [])
 
     GAMEDATA.meshesO = []
     GAMEDATA.meshesX = []
@@ -80,7 +82,7 @@ const App = () => {
             <MiniHelp display={ GAMEDATA.gameStarted && !GAMEDATA.gameFinished } />
             <AppData display={ GAMEDATA.gameStarted } />
             <GameFinished show={ GAMEDATA.gameFinished } />
-            <MainMenu display={ !GAMEDATA.gameStarted } />
+            <MainMenu display={ mainMenuOpen } />
         </>
     )
 

@@ -1,8 +1,23 @@
+import { useEffect, useState } from 'react'
 import '../sass/MiniHelp.sass'
+import { GAMEDATA } from '../constants'
 
-const MiniHelp = ( { display } ) => {
+const MiniHelp = ( { display } ) => 
+{
+    const [text, setText] = useState("Yaya!")
 
-    return <div className='MiniHelp' style={ { display: display ? 'inline-block' : 'none' } }>Tap on the tiles!</div>
+    useEffect(() =>
+    {
+        window.addEventListener('update', () =>
+        {
+            if (GAMEDATA.cpuTurn)
+                setText("Computer deciding...")
+            else
+                setText("Tap on the tiles!")
+        })
+    }, [])
+
+    return <div className='MiniHelp' style={ { display: display ? 'inline-block' : 'none' } }>{text}</div>
 
 }
 
