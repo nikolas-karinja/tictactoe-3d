@@ -28,24 +28,16 @@ const App = () => {
     GAMEDATA.meshesO = []
     GAMEDATA.meshesX = []
 
-    let bbI = 0
-
     for ( let i = 0; i < BOARD.positions.length; i++ ) {
-
-        const bI = Math.floor( i / 3 )
-
         GAMEDATA.meshesO.push( <OShape 
             key={ i } 
-            scale={ GAMEDATA.board[ bI ][ bbI ] === 1 ? 1 : 0 } 
+            scale={ GAMEDATA.board[i] === "O" ? 1 : 0 } 
             position={ [ BOARD.positions[ i ][ 0 ], 0, BOARD.positions[ i ][ 1 ] ] } /> )
         GAMEDATA.meshesX.push( <XShape 
             key={ i } 
-            scale={ GAMEDATA.board[ bI ][ bbI ] === 0 ? 1 : 0 } 
+            scale={ GAMEDATA.board[i] === "X" ? 1 : 0 } 
             position={ [ BOARD.positions[ i ][ 0 ], 0, BOARD.positions[ i ][ 1 ] ] } /> )
 
-        bbI++
-
-        if ( bbI >= 3 ) bbI = 0
 
     }
 

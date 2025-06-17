@@ -1,94 +1,165 @@
 import { AUDIO, EVENTS, GAMEDATA, GAMERULES } from './constants'
 
-export function changePlayers () {
+export const aiMove = () =>
+{
+    let move = getBestMove()
 
-    if ( GAMEDATA.cpuTurn ) GAMEDATA.cpuTurn = false
+    // switch (this.difficulty) {
+    //         case 'easy':
+    //             move = this.getRandomMove();
+    //             break;
+    //         case 'medium':
+    //             move = Math.random() > 0.5 ? this.getBestMove() : this.getRandomMove();
+    //             break;
+    //         case 'hard':
+    //             move = this.getBestMove();
+    //             break;
+    //     }
+        
+    setTimeout(() => makeMove(move, "O"), 500);
+}
 
-    if ( checkBoardForWin() ) {
+export const makeMove = (index, player) => 
+{
+        GAMEDATA.board[index] = player;
 
-        GAMEDATA.gameFinished = true
-        GAMEDATA.winner = GAMEDATA.player
+        playSound( 'SFX', 'Place' )
 
-        playSound( 'UI', 'Win' )
+        const winner = checkWinner();
+        if (winner) {
+            endGame(winner);
+            return;
+        }
+        if (!GAMEDATA.board.includes(null)) {
+            endGame('draw');
+            return;
+        }
 
-    } else {
+        GAMEDATA.player = GAMEDATA.player === 'X' ? 'O' : 'X';
+        dispatchEvent( 'update' )
 
-        if ( checkBoardForDraw() ) {
+        if (GAMEDATA.player === "O" && GAMERULES.cpuPlayer) {
+            aiMove();
+        }
+    }
 
-            GAMEDATA.winner = 2
-            GAMEDATA.gameFinished = true
+export const getRandomMove = () => 
+{
+    const available = GAMEDATA.board.reduce((acc, val, idx) => 
+            val === null ? [...acc, idx] : acc, []);
+        return available[Math.floor(Math.random() * available.length)];
+}
 
-            playSound( 'UI', 'Draw' )
+export const getBestMove = () =>
+{
+    let bestScore = -Infinity;
+    let move;
+    const _board = GAMEDATA.board
 
-        } else {
+    for (let i = 0; i < 9; i++) 
+    {
+        if (_board[i] === null) 
+        {
+            _board[i] = "O";
+            const score = minimax(_board, 0, false);
+            _board[i] = null;
 
-            setPlayer( GAMEDATA.player === 1 ? 0 : 1 )
+            if (score > bestScore) 
+            {
+                bestScore = score;
+                move = i;
+            }
+        }
+    }
 
-            if ( GAMEDATA.player === 1 && GAMERULES.cpuPlayer ) {
+    return move
+}
 
-                GAMEDATA.cpuTurn = true
+export function checkWinner () 
+{
+    const _board = GAMEDATA.board
 
-                const rN = GAMEDATA.boardTilesAvailable[ Math.floor( Math.random() * GAMEDATA.boardTilesAvailable.length ) ]
+    const wins = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
 
-                const c = Math.floor( rN / 3 )
-                const cc = rN % 3
+    for (const [a, b, c] of wins) {
+        if (_board[a] && _board[a] === _board[b] && _board[a] === _board[c]) {
+            return _board[a];
+        }
+    }
 
-                if ( !GAMEDATA.mainMenuOpen ) setTimeout( () => placeShape( c, cc ), 500 )
+    return null
+}
 
+export const minimax = (board, depth, isMaximizing) => 
+{
+        const winner = checkWinner();
+
+        if (winner === 'O') return 10 - depth;
+        if (winner === 'X') return -10 + depth;
+        if (!board.includes(null)) return 0;
+
+        if (isMaximizing) 
+        {
+            let bestScore = -Infinity;
+
+            for (let i = 0; i < 9; i++) 
+            {
+                if (board[i] === null) 
+                {
+                    board[i] = "O";
+                    const score = minimax(board, depth + 1, false);
+                    board[i] = null;
+                    bestScore = Math.max(score, bestScore);
+                }
             }
 
-        }
+            return bestScore;
+        } 
+        else 
+        {
+            let bestScore = Infinity;
 
+            for (let i = 0; i < 9; i++) 
+            {
+                if (board[i] === null) 
+                {
+                    board[i] = "X";
+                    const score = minimax(board, depth + 1, true);
+                    board[i] = null;
+                    bestScore = Math.min(score, bestScore);
+                }
+            }
+            
+            return bestScore;
+        }
     }
 
-    dispatchEvent( 'update' )
-}
+export const endGame = (result) => 
+{
+        GAMEDATA.gameFinished = true;
 
-export function checkBoardForWin () {
-
-    const p = GAMEDATA.player
-    const b = GAMEDATA.board
-
-    let win = false
-
-    // horizontal
-    
-    if ( b[ 0 ][ 0 ] === p && b[ 0 ][ 1 ] === p && b[ 0 ][ 2 ] === p ) win = true
-    if ( b[ 1 ][ 0 ] === p && b[ 1 ][ 1 ] === p && b[ 1 ][ 2 ] === p ) win = true
-    if ( b[ 2 ][ 0 ] === p && b[ 2 ][ 1 ] === p && b[ 2 ][ 2 ] === p ) win = true
-
-    // vertical
-
-    if ( b[ 0 ][ 0 ] === p && b[ 1 ][ 0 ] === p && b[ 2 ][ 0 ] === p ) win = true
-    if ( b[ 0 ][ 1 ] === p && b[ 1 ][ 1 ] === p && b[ 2 ][ 1 ] === p ) win = true
-    if ( b[ 0 ][ 2 ] === p && b[ 1 ][ 2 ] === p && b[ 2 ][ 2 ] === p ) win = true
-
-    // diagonal
-
-    if ( b[ 0 ][ 0 ] === p && b[ 1 ][ 1 ] === p && b[ 2 ][ 2 ] === p ) win = true
-    if ( b[ 0 ][ 2 ] === p && b[ 1 ][ 1 ] === p && b[ 2 ][ 0 ] === p ) win = true
-
-    return win
-
-}
-
-export function checkBoardForDraw () {
-
-    let tilesMarked = 0
-
-    for ( let y = 0; y < 3; y++ ) {
-
-        for ( let x = 0; x < 3; x++ ) {
-
-            if ( GAMEDATA.board[ y ][ x ] === 0 || GAMEDATA.board[ y ][ x ] === 1 ) tilesMarked++
-
+        if (result === 'X') {
+            GAMEDATA.winner = "X"
+            playSound( 'UI', 'Win' )
+        } else if (result === 'O') {
+            GAMEDATA.winner = "O"
+            
+            if (GAMERULES.cpuPlayer)
+                playSound( 'UI', 'Lose' )
+            else
+                playSound( 'UI', 'Win' )
+        } else {
+            GAMEDATA.winner = null
+            
+            playSound( 'UI', 'Draw' )
         }
 
+        dispatchEvent("update")
     }
-
-    return tilesMarked >= 9 ? true : false 
-
-}
 
 export function createAudioChannels () {
 
@@ -127,24 +198,6 @@ export function mainMenu () {
     dispatchEvent('open main menu')
 }
 
-export function placeShape ( c, cc ) {
-
-    GAMEDATA.board[ c ][ cc ] = GAMEDATA.player
-
-    const index = GAMEDATA.boardTilesAvailable.indexOf( ( c * 3 ) + cc )
-
-    if ( index > -1 ) {
-
-        GAMEDATA.boardTilesAvailable.splice( index, 1 )
-
-    }
-
-    playSound( 'SFX', 'Place' )
-    dispatchEvent( 'update' )
-    changePlayers()
-
-}
-
 export function playSound ( channelName, soundName ) {
 
     AUDIO.playSound( channelName, soundName )
@@ -153,17 +206,7 @@ export function playSound ( channelName, soundName ) {
 
 export function resetBoard () {
 
-    for ( let y = 0; y < 3; y++ ) {
-
-        for ( let x = 0; x < 3; x++ ) {
-
-            GAMEDATA.board[ y ][ x ] = 2
-        
-        }
-
-    }
-
-    GAMEDATA.boardTilesAvailable = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+    GAMEDATA.board = Array(9).fill(null);
 
 }
 
@@ -171,11 +214,9 @@ export function resetGame () {
     
     resetBoard()
 
-    GAMEDATA.winner = 2
+    GAMEDATA.winner = null
     GAMEDATA.gameFinished = false
-
-    changePlayers()
-
+    GAMEDATA.player = "X"
 }
 
 export function setPlayer ( number ) {

@@ -1,21 +1,14 @@
 import { GAMEDATA } from '../constants'
-import { changePlayers, dispatchEvent, placeShape, playSound } from '../utils'
+import { makeMove } from '../utils'
 
 const BoardTile = ( { x, z, index } ) => {
 
     let i = index
 
-    const onClick = () => {
-
-        const c = Math.floor( i / 3 )
-        const cc = i % 3
-
-        if ( !GAMEDATA.gameFinished && GAMEDATA.board[ c ][ cc ] === 2 && !GAMEDATA.cpuTurn ) {
-
-            placeShape( c, cc )
-
-        }
-
+    const onClick = () => 
+    {
+        if (GAMEDATA.board[i] === null)
+            makeMove(i, GAMEDATA.player)
     }
 
     return (

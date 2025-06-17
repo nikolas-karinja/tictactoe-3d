@@ -25,7 +25,7 @@ const GameFinishedShapeCanvas = ( { player } ) => {
                 enablePan={ false }
                 enableZoom={ false }/>
             <Float>
-                { player === 0 ? 
+                { player === "X" ? 
                     <XShape 
                         rotation={ shapeRotation }
                         scale={ shapeScale } /> : 

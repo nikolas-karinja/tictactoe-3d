@@ -1,6 +1,6 @@
 import { AudioMixer } from '@little-island/audio'
 
-export const VERSION = '0.3.1'
+export const VERSION = '0.4.0'
 
 export const EVENTS = {}
 export const AUDIO = new AudioMixer()
@@ -22,7 +22,7 @@ export const BOARD = {
 export const GAMERULES = {
     cpuPlayer: false,
     maxTurnTimeAllowed: 5, // seconds allowed for each player's turn
-    playerToStart: 0, // 0 is X, 1 is O
+    playerToStart: "X", // 0 is X, 1 is O
     turnTimeLimit: true, // if there should be a time limit for each player's turn
 }
 
@@ -35,14 +35,14 @@ export const GAMEDATA = {
     mainMenuOpen: true,
     meshesO: [],
     meshesX: [],
-    player: GAMERULES.playerToStart, // 0 is X, 1 is O
-    winner: 2, // 0 = X, 1 = O, 2 = none
+    player: GAMERULES.playerToStart,
+    winner: null,
     boardTilesAvailable: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ], 
 
-    board: [ // 0 = X, 1 = O, 2 = none
-        [ 2, 2, 2 ],
-        [ 2, 2, 2 ],
-        [ 2, 2, 2 ],
+    board: [
+        null, null, null, 
+        null, null, null,
+        null, null, null,
     ],
 }
 
@@ -54,4 +54,5 @@ export const sounds = [
     { name: 'Button', url: './audio/ui/button.mp3' },
     { name: 'Draw', url: './audio/ui/draw.mp3' },
     { name: 'Win', url: './audio/ui/win.mp3' },
+    { name: 'Lose', url: './audio/ui/lose.mp3' },
 ]

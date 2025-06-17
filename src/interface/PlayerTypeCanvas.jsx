@@ -2,18 +2,18 @@ import { Canvas } from '@react-three/fiber'
 import { Float, Preload } from '@react-three/drei'
 import { Model as Human } from '../models/Human'
 import { useEffect, useState } from 'react'
-import { GAMEDATA } from '../constants'
+import { GAMEDATA, GAMERULES } from '../constants'
 import { Robot } from '../models/Robot'
 
 const PlayerTypeCanvas = () => {
 
-    const [isCpuPlayer, setIsCpuPlayer] = useState(GAMEDATA.cpuTurn)
+    const [_, _update] = useState(Date.now())
 
     useEffect(() =>
     {
         window.addEventListener("update", () =>
         {
-            setIsCpuPlayer(GAMEDATA.cpuTurn)
+            _update(Date.now())
         })
     })
 
@@ -31,7 +31,7 @@ const PlayerTypeCanvas = () => {
                 position={ [ -2.5, 5, 5 ] }
                 shadow-mapSize={ 1024 } />
             <Float>
-                {isCpuPlayer ? 
+                {GAMERULES.cpuPlayer && GAMEDATA.player === "O" ? 
                     <Robot
                         rotation={ [ 0, Math.PI * 3.15, 0 ] }
                         scale={ 2 } /> : 

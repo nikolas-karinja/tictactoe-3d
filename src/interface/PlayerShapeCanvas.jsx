@@ -24,10 +24,10 @@ const PlayerShapeCanvas = ( { player } ) => {
             <Float>
                 <OShape 
                     rotation={ shapeRotation }
-                    scale={ player === 1 ? shapeScale : 0 } />
+                    scale={ player === "O" ? shapeScale : 0 } />
                 <XShape 
                     rotation={ shapeRotation }
-                    scale={ player === 0 ? shapeScale : 0 } />
+                    scale={ player === "X" ? shapeScale : 0 } />
             </Float>
 
             <Preload />
