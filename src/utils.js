@@ -2,7 +2,7 @@ import { AUDIO, EVENTS, GAMEDATA, GAMERULES } from './constants'
 
 export const aiMove = () =>
 {
-    let move = getBestMove()
+    let move = Math.random() > 0.75 ? getRandomMove() : getBestMove()
 
     // switch (this.difficulty) {
     //         case 'easy':
@@ -154,7 +154,7 @@ export const endGame = (result) =>
                 playSound( 'UI', 'Win' )
         } else {
             GAMEDATA.winner = null
-            
+
             playSound( 'UI', 'Draw' )
         }
 
