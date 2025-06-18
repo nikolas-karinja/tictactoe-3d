@@ -24,6 +24,7 @@ export const GAMERULES = {
     maxTurnTimeAllowed: 5, // seconds allowed for each player's turn
     playerToStart: "X", // 0 is X, 1 is O
     turnTimeLimit: true, // if there should be a time limit for each player's turn
+    difficulty: "Hard"
 }
 
 export const GAMEDATA = {
@@ -55,4 +56,5 @@ export const sounds = [
     { name: 'Draw', url: './audio/ui/draw.mp3' },
     { name: 'Win', url: './audio/ui/win.mp3' },
     { name: 'Lose', url: './audio/ui/lose.mp3' },
+    { name: 'Difficulty', url: './audio/ui/difficulty.mp3' },
 ]

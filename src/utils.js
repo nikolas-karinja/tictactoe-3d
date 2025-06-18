@@ -2,19 +2,19 @@ import { AUDIO, EVENTS, GAMEDATA, GAMERULES } from './constants'
 
 export const aiMove = () =>
 {
-    let move = Math.random() > 0.75 ? getRandomMove() : getBestMove()
+    let move
 
-    // switch (this.difficulty) {
-    //         case 'easy':
-    //             move = this.getRandomMove();
-    //             break;
-    //         case 'medium':
-    //             move = Math.random() > 0.5 ? this.getBestMove() : this.getRandomMove();
-    //             break;
-    //         case 'hard':
-    //             move = this.getBestMove();
-    //             break;
-    //     }
+    switch (GAMERULES.difficulty) {
+        case 'Easy':
+            move = getRandomMove();
+            break;
+        case 'Medium':
+            move = Math.random() > 0.5 ? getBestMove() : getRandomMove();
+            break;
+        case 'Hard':
+            move = getBestMove();
+            break;
+    }
         
     setTimeout(() => makeMove(move, "O"), 500);
 }

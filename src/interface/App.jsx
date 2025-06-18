@@ -4,7 +4,7 @@ import { Canvas } from '@react-three/fiber'
 import TurnData from './TurnData'
 import AppData from './AppData'
 import Board from './Board'
-import { BOARD, GAMEDATA } from '../constants'
+import { BOARD, GAMEDATA, GAMERULES } from '../constants'
 import { Model as OShape } from '../models/OShape'
 import { Model as XShape } from '../models/XShape'
 import { createEvent } from '../utils'
@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import GameFinished from './GameFinished'
 import MainMenu from './MainMenu'
 import MiniHelp from './MiniHelp'
+import DifficultySelection from './DifficultySelection'
 
 const App = () => {
 
@@ -74,6 +75,7 @@ const App = () => {
             <MiniHelp display={ GAMEDATA.gameStarted && !GAMEDATA.gameFinished } />
             <AppData display={ GAMEDATA.gameStarted } />
             <GameFinished show={ GAMEDATA.gameFinished } />
+            <DifficultySelection show={GAMEDATA.gameStarted && !GAMEDATA.gameFinished && GAMERULES.cpuPlayer} />
             <MainMenu display={ mainMenuOpen } />
         </>
     )
